@@ -15,15 +15,30 @@ document.querySelector('.check').addEventListener('click', function() {
     // Checking for value
     if(!guess) {
         document.querySelector('.message').textContent = 'Please enter a number!';
-    } else if (guess === secretNumber) {
+
+    //When player guesses correctly
+    } else if (guess === secretNumber) { 
         document.querySelector('.message').textContent = 'Correct!';
-    } else if (guess > secretNumber) {
-        document.querySelector('.message').textContent = 'Too High';
-        score--;
-        document.querySelector('.score').textContent = score;
-    } else if (guess < secretNumber) {
-        document.querySelector('.message').textContent = 'Too Low';
-        score--;
-        document.querySelector('.score').textContent = score;
+        document.querySelector('.number').textContent = secretNumber;
+
+    // When player guesses too high
+    } else if (guess > secretNumber) {  
+        if(score > 0) {
+            document.querySelector('.message').textContent = 'Too High';
+            score--;
+            document.querySelector('.score').textContent = score;
+        } else {
+            document.querySelector('.message').textContent = 'No more guesses available.';
+        }
+
+    // When player guesses too low
+    } else if (guess < secretNumber) { 
+        if (score > 0) {
+            document.querySelector('.message').textContent = 'Too Low';
+            score--;
+            document.querySelector('.score').textContent = score;
+        } else {
+            document.querySelector('.message').textContent = 'No more guesses available.';
+        }
     }
 })
