@@ -4,6 +4,11 @@
 // if we put it inside the function, we would get a new number every click.
 let secretNumber = Math.trunc(Math.random()*20) + 1;
 let score = 20;
+let hiScore = 0;
+
+const displayMsg = function(msg) {
+    document.querySelector('.message').textContent = msg;
+}
 
 document.querySelector('.check').addEventListener('click', function() {
     // The user's input comes back as a String, so we need to convert to number
@@ -11,33 +16,31 @@ document.querySelector('.check').addEventListener('click', function() {
 
     // Checking for empty value
     if(!guess) {
-        document.querySelector('.message').textContent = 'Please enter a number!';
+        displayMsg('Please enter a number!');
 
     //When player guesses correctly
     } else if (guess === secretNumber) { 
-        document.querySelector('.message').textContent = 'Correct!';
+        displayMsg('Correct!');
         document.querySelector('.number').textContent = secretNumber;
         document.querySelector('body').style.backgroundColor = '#60b347';
         document.querySelector('.number').style.width = '30rem';
 
-    // When player guesses too high
-    } else if (guess > secretNumber) {  
-        if(score > 0) {
-            document.querySelector('.message').textContent = 'Too High';
-            score--;
-            document.querySelector('.score').textContent = score;
-        } else {
-            document.querySelector('.message').textContent = 'No more guesses available.';
+        // Setting highscore for current game
+        if(score > hiScore) {
+            hiScore = score;
+            document.querySelector('.highscore').textContent = hiScore;
         }
 
-    // When player guesses too low
-    } else if (guess < secretNumber) { 
-        if (score > 0) {
-            document.querySelector('.message').textContent = 'Too Low';
+    // When player guesses too high
+    } else if (guess !== secretNumber) {
+        if(score > 0) {
+            // ternary operator to decide which string to output
+            const highLow = guess > secretNumber ? 'Too High' : 'Too Low'
+            displayMsg(highLow);
             score--;
             document.querySelector('.score').textContent = score;
         } else {
-            document.querySelector('.message').textContent = 'No more guesses available.';
+            displayMsg('No more guesses available.');
         }
     }
 })
@@ -46,7 +49,7 @@ document.querySelector('.check').addEventListener('click', function() {
 document.querySelector('.again').addEventListener('click', function() {
     secretNumber = Math.trunc(Math.random()*20) + 1;
     score = 20;
-    document.querySelector('.message').textContent = 'Start guessing...';
+    displayMsg('Start guessing...')
     document.querySelector('.score').textContent = score;
     document.querySelector('.number').textContent = '?';
     document.querySelector('.guess').value = '';
